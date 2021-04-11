@@ -4,8 +4,10 @@ from telebot import types
 import json
 import time
 import requests
+from flask import Flask
 TOKEN = "1707383819:AAH6vydQNj78mRV0BfWwQnDrOSE_O7fUS-Y" # Ponemos nuestro Token generado con el @BotFather
 bot = telebot.TeleBot(TOKEN)  #Creamos nuestra instancia "bot" a partir de ese TOKEN
+server = Flask(__name__)
 
 partidaActual = {} #diccionario de diccionarios (clave= id del usuario, valor= datos de la partida actual)
 #almacenar solo jugadores y sus cartas formateadas de la siguiente manera [1H,9S,5H,KD]
@@ -347,6 +349,20 @@ def resolver(message):
             n = n+1
     except Exception:
         bot.reply_to(message, 'Error llamando a la API')
+
+
+# SERVER SIDE 
+@server.route('/' + TOKEN, methods=['POST'])
+def getMessage():
+   bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
+   return "!", 200
+@server.route("/")
+def webhook():
+   bot.remove_webhook()
+   bot.set_webhook(url='https://telebot-pokersolver.herokuapp.com/' + TOKEN)
+   return "!", 200
+if __name__ == "__main__":
+   server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
 
 
     
