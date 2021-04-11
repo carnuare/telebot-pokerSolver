@@ -5,7 +5,7 @@ from telebot import types
 import json
 import time
 import requests
-from flask import Flask
+from flask import Flask, request
 TOKEN = "1707383819:AAH6vydQNj78mRV0BfWwQnDrOSE_O7fUS-Y" # Ponemos nuestro Token generado con el @BotFather
 bot = telebot.TeleBot(TOKEN)  #Creamos nuestra instancia "bot" a partir de ese TOKEN
 server = Flask(__name__)
