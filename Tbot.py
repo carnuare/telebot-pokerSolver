@@ -1,4 +1,5 @@
 print("Hola buenas tardes")
+import os
 import telebot 
 from telebot import types
 import json
